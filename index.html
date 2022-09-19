@@ -6,28 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WebRTC videochat</title>
   </head>
-  <body>
-    <div class="flex">
-      <span>
+  <body class="container lg:w-3/5 mx-auto">
+    <div class="flex flex-col md:flex-row text-center">
+      <span class="w-full">
         <h3>Local</h3>
         <video id="webcamVideo" autoplay playsinline></video>
       </span>
-      <span>
+      <span class="w-full">
         <h3>Remote</h3>
         <video id="remoteVideo" autoplay playsinline></video>
       </span>
     </div>
 
-    <button id="webcamButton" class="btn btn-blue">Start webcam</button>
-    <h2>Create a new Call</h2>
-    <button id="callButton" disabled class="btn btn-blue">Call</button>
+    <div class="mt-4">
+      <button id="webcamButton" class="btn btn-blue mb-4">Start webcam</button>
 
-    <h2>Join a Call</h2>
+      <h2>Create a new Call</h2>
+      <button id="callButton" disabled class="btn btn-blue mb-4">Call</button>
 
-    <input id="callInput" />
-    <button id="answerButton" disabled class="btn btn-blue">Answer</button>
+      <h2>Join a Call</h2>
 
-    <button id="hangupButton" disabled class="btn btn-blue">Hangup</button>
+      <input
+        id="callInput"
+        class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 mb-4"
+      />
+
+      <button id="answerButton" disabled class="btn btn-blue">Answer</button>
+
+      <button id="hangupButton" disabled class="btn btn-blue">Hangup</button>
+    </div>
 
     <script type="module" src="/main.js"></script>
   </body>

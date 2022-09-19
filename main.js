@@ -3,7 +3,7 @@ import "./style.css";
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection, getDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -40,6 +40,7 @@ const answerButton = document.getElementById("answerButton");
 const remoteVideo = document.getElementById("remoteVideo");
 const hangupButton = document.getElementById("hangupButton");
 
+// 1. Setup media sources
 webcamButton.onclick = async () => {
   localStream = await navigator.mediaDevices.getUserMedia({
     video: true,
@@ -59,12 +60,17 @@ webcamButton.onclick = async () => {
 
   webcamVideo.srcObject = localStream;
   remoteVideo.srcObject = remoteStream;
+
+  callButton.disabled = false;
+  answerButton.disabled = false;
+  webcamButton.disabled = true;
 };
 
+// 2. Create an offer
 callButton.onclick = async () => {
-  const callDoc = firestore.collection("calls".doc());
-  const offerCandidates = callDoc.collection("offerCandidates");
-  const answerCandidates = callDoc.collection("answerCandidates");
+  const callDoc = await getDoc(collection(firestore, "calls"));
+  const offerCandidates = collection(firestore, callDoc, "offerCandidates");
+  const answerCandidates = collection(firestore, callDoc, "answerCandidates");
 
   callInput.value = callDoc.id;
 
@@ -98,8 +104,11 @@ callButton.onclick = async () => {
       }
     });
   });
+
+  hangupButton.disabled = false;
 };
 
+// 3. Answer the call with the unique ID
 answerButton.onclick = async () => {
   const callId = callInput.value;
   const callDoc = firestore.collection("calls".doc(callId));
