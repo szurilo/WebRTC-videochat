@@ -10,45 +10,47 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body class="container lg:w-3/5 mx-auto">
-    <div class="flex flex-col md:flex-row text-center">
-      <span class="w-full">
-        <h3>Local</h3>
-        <video id="webcamVideo" autoplay playsinline></video>
-      </span>
-      <span class="w-full">
-        <h3>Remote</h3>
-        <video id="remoteVideo" autoplay playsinline></video>
-      </span>
+  <body>
+    <div>
+      <video
+        id="webcamVideo"
+        autoplay
+        playsinline
+        class="w-full"
+        style="max-height: 90vh"
+      ></video>
+      <video id="remoteVideo" autoplay playsinline class="hidden"></video>
     </div>
 
-    <div class="mt-4">
-      <button id="webcamButton" class="btn btn-blue mb-4">
-        <i id="webcamIconEnabled" class="fa-solid fa-video hidden"></i>
-        <i id="webcamIconDisabled" class="fa-solid fa-video-slash"></i>
-      </button>
-
-      <button id="callButton" disabled class="btn btn-blue mb-4">
-        <i class="fa-solid fa-phone"></i>
-      </button>
-
+    <div class="container lg:w-3/5 mx-auto my-4">
+      <h2>
+        Share the below call id between devices/browser windows and press the
+        green call button.
+      </h2>
+      <br />
       <h2>Call id:</h2>
 
       <input
         id="callInput"
         class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 mb-4"
       />
+      <div class="flex justify-center">
+        <button id="webcamButton" class="btn btn-blue">
+          <i id="webcamIconEnabled" class="fa-solid fa-video hidden"></i>
+          <i id="webcamIconDisabled" class="fa-solid fa-video-slash"></i>
+        </button>
 
-      <button id="answerButton" disabled class="btn btn-green">
-        <i class="fa-solid fa-phone fa-shake"></i>
-      </button>
+        <button id="answerButton" disabled class="btn btn-green">
+          <i class="fa-solid fa-phone fa-shake"></i>
+        </button>
 
-      <button id="hangupButton" disabled class="btn btn-red">
-        <i
-          class="fa-solid fa-phone fa-rotate-by"
-          style="--fa-rotate-angle: 135deg"
-        ></i>
-      </button>
+        <button id="hangupButton" disabled class="btn btn-red">
+          <i
+            class="fa-solid fa-phone fa-rotate-by"
+            style="--fa-rotate-angle: 135deg"
+          ></i>
+        </button>
+      </div>
     </div>
 
     <script type="module" src="/main.js"></script>
