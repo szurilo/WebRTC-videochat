@@ -1,4 +1,9 @@
 todo:
-Change Firebase Test mode to Locked mode
+Change Firebase Test mode to Locked mode:
+https://firebase.google.com/docs/firestore/security/overview
 
-Redesign
+Refactor:
+
+1. Start local camera and create an offer with text below "To make a call type the below id into the other devices/browser windows input field and press the call button".
+2. Call button is only enabled if the input box is not empty.
+3. Hangup button is only enabled if there is an ongoing call.

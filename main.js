@@ -1,5 +1,4 @@
 import "./style.css";
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -49,6 +48,8 @@ const answerButton = document.getElementById("answerButton");
 const remoteVideo = document.getElementById("remoteVideo");
 const hangupButton = document.getElementById("hangupButton");
 
+let webcamIsOn = false;
+
 // 1. Setup media sources
 webcamButton.onclick = async () => {
   localStream = await navigator.mediaDevices.getUserMedia({
@@ -70,9 +71,17 @@ webcamButton.onclick = async () => {
   webcamVideo.srcObject = localStream;
   remoteVideo.srcObject = remoteStream;
 
-  callButton.disabled = false;
-  answerButton.disabled = false;
-  webcamButton.disabled = true;
+  if (webcamIsOn) {
+    webcamIconEnabled.style = "display: none";
+    webcamIconDisabled.style = "display: block";
+    webcamIsOn = false;
+  } else {
+    callButton.disabled = false;
+    answerButton.disabled = false;
+    webcamIconEnabled.style = "display: block";
+    webcamIconDisabled.style = "display: none";
+    webcamIsOn = true;
+  }
 };
 
 // 2. Create an offer

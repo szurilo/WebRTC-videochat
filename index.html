@@ -5,6 +5,10 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WebRTC videochat</title>
+    <script
+      src="https://kit.fontawesome.com/147fe4417f.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body class="container lg:w-3/5 mx-auto">
     <div class="flex flex-col md:flex-row text-center">
@@ -19,21 +23,32 @@
     </div>
 
     <div class="mt-4">
-      <button id="webcamButton" class="btn btn-blue mb-4">Start webcam</button>
+      <button id="webcamButton" class="btn btn-blue mb-4">
+        <i id="webcamIconEnabled" class="fa-solid fa-video hidden"></i>
+        <i id="webcamIconDisabled" class="fa-solid fa-video-slash"></i>
+      </button>
 
-      <h2>Create a new Call</h2>
-      <button id="callButton" disabled class="btn btn-blue mb-4">Call</button>
+      <button id="callButton" disabled class="btn btn-blue mb-4">
+        <i class="fa-solid fa-phone"></i>
+      </button>
 
-      <h2>Join a Call</h2>
+      <h2>Call id:</h2>
 
       <input
         id="callInput"
         class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 mb-4"
       />
 
-      <button id="answerButton" disabled class="btn btn-blue">Answer</button>
+      <button id="answerButton" disabled class="btn btn-green">
+        <i class="fa-solid fa-phone fa-shake"></i>
+      </button>
 
-      <button id="hangupButton" disabled class="btn btn-blue">Hangup</button>
+      <button id="hangupButton" disabled class="btn btn-red">
+        <i
+          class="fa-solid fa-phone fa-rotate-by"
+          style="--fa-rotate-angle: 135deg"
+        ></i>
+      </button>
     </div>
 
     <script type="module" src="/main.js"></script>
