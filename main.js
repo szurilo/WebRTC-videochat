@@ -42,6 +42,7 @@ let remoteStream = null;
 
 const webcamButton = document.getElementById("webcamButton");
 const webcamVideo = document.getElementById("webcamVideo");
+const callButton = document.getElementById("callButton");
 const callInput = document.getElementById("callInput");
 const answerButton = document.getElementById("answerButton");
 const remoteVideo = document.getElementById("remoteVideo");
@@ -68,45 +69,6 @@ pc.ontrack = (event) => {
 webcamVideo.srcObject = localStream;
 remoteVideo.srcObject = remoteStream;
 
-const callDoc = doc(collection(db, "calls"));
-const offerCandidates = collection(db, `calls/${callDoc.id}/offerCandidates`);
-const answerCandidates = collection(db, `calls/${callDoc.id}/offerCandidates`);
-
-callInput.value = callDoc.id;
-
-pc.onicecandidate = (event) => {
-  event.candidate && addDoc(offerCandidates, event.candidate.toJSON());
-};
-
-const offerDescription = await pc.createOffer();
-await pc.setLocalDescription(offerDescription);
-
-const offer = {
-  sdp: offerDescription.sdp,
-  type: offerDescription.type,
-};
-
-await setDoc(callDoc, { offer });
-
-onSnapshot(callDoc, (snapshot) => {
-  const data = snapshot.data();
-  if (!pc.currentRemoteDescription && data?.answer) {
-    const answerDescription = new RTCSessionDescription(data.answer);
-    pc.setRemoteDescription(answerDescription);
-  }
-});
-
-onSnapshot(answerCandidates, (snapshot) => {
-  snapshot.docChanges().forEach((change) => {
-    if (change.type === "added") {
-      const candidate = new RTCIceCandidate(change.doc.data());
-      pc.addIceCandidate(candidate);
-    }
-  });
-});
-
-hangupButton.disabled = false;
-
 // 1. Setup media sources
 webcamButton.onclick = async () => {
   if (webcamIsOn) {
@@ -120,6 +82,55 @@ webcamButton.onclick = async () => {
     webcamIsOn = true;
   }
 };
+
+// 2. Create an offer
+callButton.onclick = async () => {
+  const callDoc = doc(collection(db, "calls"));
+  const offerCandidates = collection(db, `calls/${callDoc.id}/offerCandidates`);
+  const answerCandidates = collection(
+    db,
+    `calls/${callDoc.id}/offerCandidates`
+  );
+
+  callInput.value = callDoc.id;
+  // var event = new Event("input");
+  // callInput.dispatchEvent(event);
+
+  pc.onicecandidate = (event) => {
+    event.candidate && addDoc(offerCandidates, event.candidate.toJSON());
+  };
+
+  const offerDescription = await pc.createOffer();
+  await pc.setLocalDescription(offerDescription);
+
+  const offer = {
+    sdp: offerDescription.sdp,
+    type: offerDescription.type,
+  };
+
+  await setDoc(callDoc, { offer });
+
+  onSnapshot(callDoc, (snapshot) => {
+    const data = snapshot.data();
+    if (!pc.currentRemoteDescription && data?.answer) {
+      const answerDescription = new RTCSessionDescription(data.answer);
+      pc.setRemoteDescription(answerDescription);
+    }
+  });
+
+  onSnapshot(answerCandidates, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "added") {
+        const candidate = new RTCIceCandidate(change.doc.data());
+        pc.addIceCandidate(candidate);
+      }
+    });
+  });
+};
+
+callInput.addEventListener("input", () => {
+  answerButton.disabled = false;
+});
 
 // 3. Answer the call with the unique ID
 answerButton.onclick = async () => {
@@ -159,4 +170,6 @@ answerButton.onclick = async () => {
       }
     });
   });
+  hangupButton.disabled = false;
+  answerButton.disabled = true;
 };

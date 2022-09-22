@@ -19,13 +19,17 @@
         class="w-full"
         style="max-height: 90vh"
       ></video>
-      <video id="remoteVideo" autoplay playsinline class="hidden"></video>
+      <video id="remoteVideo" autoplay playsinline></video>
     </div>
 
     <div class="container lg:w-3/5 mx-auto my-4">
+      <h2>To start a call press the blue button.</h2>
+      <button id="callButton" class="btn btn-blue mb-4">
+        <i class="fa-solid fa-phone"></i>
+      </button>
       <h2>
-        Share the below call id between devices/browser windows and press the
-        green call button.
+        Share the below call id with another device/browser window and press the
+        green call button on the other device.
       </h2>
       <br />
       <h2>Call id:</h2>
@@ -34,14 +38,14 @@
         id="callInput"
         class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 mb-4"
       />
-      <div class="flex justify-center">
+      <div class="flex justify-center space-x-4">
         <button id="webcamButton" class="btn btn-blue">
           <i id="webcamIconEnabled" class="fa-solid fa-video hidden"></i>
           <i id="webcamIconDisabled" class="fa-solid fa-video-slash"></i>
         </button>
 
         <button id="answerButton" disabled class="btn btn-green">
-          <i class="fa-solid fa-phone fa-shake"></i>
+          <i class="fa-solid fa-phone"></i>
         </button>
 
         <button id="hangupButton" disabled class="btn btn-red">
