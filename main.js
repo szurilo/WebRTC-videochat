@@ -50,24 +50,29 @@ const hangupButton = document.getElementById("hangupButton");
 
 let webcamIsOn = true;
 
-localStream = await navigator.mediaDevices.getUserMedia({
-  video: true,
-  audio: true, //{'echoCancellation': true}
-});
-remoteStream = new MediaStream();
+navigator.mediaDevices
+  .getUserMedia({
+    video: true,
+    audio: true, //{'echoCancellation': true}
+  })
+  .then((stream) => {
+    localStream = stream;
+    remoteStream = new MediaStream();
 
-localStream.getTracks().forEach((track) => {
-  pc.addTrack(track, localStream);
-});
+    localStream.getTracks().forEach((track) => {
+      pc.addTrack(track, localStream);
+    });
 
-pc.ontrack = (event) => {
-  event.streams[0].getTracks().forEach((track) => {
-    remoteStream.addTrack(track);
-  });
-};
+    pc.ontrack = (event) => {
+      event.streams[0].getTracks().forEach((track) => {
+        remoteStream.addTrack(track);
+      });
+    };
 
-webcamVideo.srcObject = localStream;
-remoteVideo.srcObject = remoteStream;
+    webcamVideo.srcObject = localStream;
+    remoteVideo.srcObject = remoteStream;
+  })
+  .catch((e) => console.log(e));
 
 // 1. Setup media sources
 webcamButton.onclick = async () => {
